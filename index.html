@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Niconne&display=swap"
+      rel="stylesheet"
+    />
+    <title>Surprise</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Handjet", serif;
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-style: normal;
+        font-variation-settings: "ELGR" 1, "ELSH" 2;
+        background: linear-gradient(
+          145deg,
+          rgb(255, 0, 0),
+          rgba(255, 160, 233, 0.74),
+          rgb(255, 0, 128)
+        );
+        padding: 1rem;
+      }
+
+      span {
+        color: rgba(2, 2, 2, 0.01);
+      }
+      .container {
+        max-width: 600px;
+        background: rgba(255, 255, 255, 0.332);
+        border: rgba(0, 0, 0, 0.1) 1px solid;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .step {
+        display: none;
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      .step.active {
+        display: block;
+      }
+
+      .step p {
+        animation: fadeIn 2s ease-out forwards;
+      }
+
+      .icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 1.5rem;
+      }
+
+      h1 {
+        color: #1f2937;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+      }
+
+      p {
+        color: #4b5563;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+
+      .name {
+        color: rgba(0, 106, 255, 0);
+        margin-bottom: 1rem;
+        font-size: 2rem;
+      }
+
+      .name:hover {
+        color: rgb(107, 84, 255);
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        animation: fadeIn 1.5s ease-in forwards;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #e5e7eb;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .progress {
+        width: 0%;
+        height: 100%;
+        background: rgb(150, 0, 100);
+        animation: progress 2s ease-in-out forwards;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      button {
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: 999px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .yes-btn {
+        background: #ec4899;
+        color: white;
+      }
+
+      .yes-btn:hover {
+        transform: scale(1.05);
+        background: #db2777;
+      }
+
+      .no-btn {
+        background: #e5e7eb;
+        color: #4b5563;
+      }
+
+      .no-btn:hover {
+        transform: scale(1.05);
+        background: rgb(255, 0, 0);
+      }
+
+      .no-btn p {
+        opacity: 0%;
+      }
+      .no-btn:hover p {
+        opacity: 100%;
+      }
+      .success {
+        display: none;
+        color: rgb(77, 77, 77);
+        text-align: center;
+        max-width: 600px;
+        background: rgba(255, 255, 255, 0.332);
+        border: rgba(0, 0, 0, 0.1) 1px solid;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .success.active {
+        display: block;
+      }
+
+      .failure {
+        display: none;
+        color: rgb(35, 35, 35);
+        text-align: center;
+        max-width: 600px;
+        background: rgba(255, 255, 255, 0.332);
+        border: rgba(0, 0, 0, 0.1) 1px solid;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .failure.active {
+        display: block;
+      }
+
+      .feedback {
+        width: 300px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.38);
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      label {
+        display: block;
+        color: #4a4a4a;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f7f7f7;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: rgb(0, 234, 255);
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }
+
+      input:hover {
+        border-color: rgba(248, 147, 255, 0.51);
+        box-shadow: 0 2px 5px rgba(248, 147, 255, 0.95);
+      }
+
+      .feedback-button {
+        width: 100px;
+        height: 30px;
+        background-color: rgba(133, 109, 255, 0.27);
+        border: 1px solid rgba(255, 0, 183, 0.13);
+        border-radius: 20px;
+        cursor: pointer;
+        transition: 0.4s;
+        margin: 10px;
+      }
+
+      .feedback-button:hover {
+        box-shadow: 0 0 6px 5px rgb(241, 27, 234);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes progress {
+        0% {
+          width: 0%;
+          color: rgba(255, 0, 115, 0.58);
+        }
+        100% {
+          width: 100%;
+          color: rgb(255, 0, 128);
+        }
+      }
+
+      .heart {
+        color: #ec4899;
+        font-size: 3rem;
+        animation: pulse 0.5s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="success">
+      <h1 style="font-size: 2.5rem; margin-bottom: 1rem">She said YES! 💝</h1>
+      <p style="color: rgb(92, 92, 92); font-size: 1.25rem">
+        Hence the story continues with <b>LG</b>...
+      </p>
+    </div>
+
+    <div class="failure">
+      <h1 style="font-size: 2.5rem; margin-bottom: 1rem">So Sad 😞</h1>
+      <p style="color: rgb(103, 103, 103); font-size: 1.25rem">
+        Am I that Bad.? Please Think Again.
+      </p>
+      <div class="feedback">
+        <label for="unique-input">Any improvements ? </label>
+        <input
+          type="text"
+          id="unique-input"
+          placeholder="How can I improve for you?"
+        />
+        <button class="feedback-button" type="submit">
+          <a style="text-decoration:none; color:#5727db" href="tel:+917738261448">Submit</a>
+        </button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="step active" id="step1">
+        <div class="icon"><h1>⚡</h1></div>
+        <h1>Initializing Love Protocol...</h1>
+        <div class="progress-bar">
+          <div class="progress"></div>
+        </div>
+      </div>
+
+      <div class="step" id="step2">
+        <div class="icon"><h1>🧠</h1></div>
+        <h1>Training AI Love Model...</h1>
+        <p>Processing countless moments together...</p>
+        <div class="progress-bar">
+          <div class="progress"></div>
+        </div>
+      </div>
+
+      <div class="step" id="step3">
+        <div class="icon"><h1>✨</h1></div>
+        <h1>Analyzing Compatibility...</h1>
+        <p>Result : Perfect Match Found!</p>
+        <div class="progress-bar">
+          <div class="progress"></div>
+        </div>
+      </div>
+
+      <div class="step" id="step4">
+        <div class="heart">❤️</div>
+        <h1>
+          Dear
+          <div class="name">Samruddhi</div>
+        </h1>
+        <p>
+          Just as AI learns patterns and CS builds solutions,<br />
+          I've learned that you're the missing algorithm in my life.<br />
+          Will you join me in debugging life's challenges together? <br />
+          Will you be the debugger of my life and eliminate the errors?
+        </p>
+        <div class="buttons">
+          <button class="yes-btn" onclick="handleYes()">Yes 💝</button>
+          <button class="no-btn" onclick="handleNo()">No 🥺</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      const steps = ["step1", "step2", "step3", "step4"];
+      let currentStep = 0;
+      function nextStep() {
+        if (currentStep < steps.length - 1) {
+          document
+            .getElementById(steps[currentStep])
+            .classList.remove("active");
+          currentStep++;
+          document.getElementById(steps[currentStep]).classList.add("active");
+        }
+      }
+      function handleYes() {
+        document.querySelector(".container").style.display = "none";
+        document.querySelector(".success").classList.add("active");
+      }
+      function handleNo() {
+        document.querySelector(".container").style.display = "none";
+        document.querySelector(".failure").classList.add("active");
+      }
+      setInterval(() => {
+        if (currentStep < 3) {
+          nextStep();
+        }
+      }, 3500);
+    </script>
+  </body>
+</html>
